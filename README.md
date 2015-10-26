@@ -1,8 +1,10 @@
-## Stat Tracker
+# Stat Tracker project
 
-### A collaborative effort of the TIY-Durham Python and Front End classes
+![Graphiness](http://www.scienceclarified.com/photos/graphs-and-graphing-3080.jpg)
+
+### A collaborative effort of the TIY-Durham Python and Front End Engineering classes.
 Team members:
 * Will Butts
-* Sahy Hall
+* Shay Hall
 * Rosa Lopez Sanchez
 * Kathleen Rauh
