@@ -2,3 +2,4 @@ Django
 djangorestframework
 django-rest-swagger
 psycopg2
+fake-factory
