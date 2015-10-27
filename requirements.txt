@@ -2,4 +2,6 @@ Django
 djangorestframework
 django-rest-swagger
 psycopg2
+django-cors-headers
+drf-nested-routers
 fake-factory
