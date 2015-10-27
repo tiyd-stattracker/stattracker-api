@@ -1,14 +1,19 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from .models import Activity, Log
-from .serializers import ActivitySerializer, LogSerializer
+from .serializers import ActivitySerializer, ActivityDetailSerializer, LogSerializer
 from datetime import datetime
 
 # Create your views here.
 
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
-    serializer_class = ActivitySerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ActivitySerializer
+        else:
+            return ActivityDetailSerializer
 
 class LogViewSet(viewsets.ModelViewSet):
     queryset = Log.objects.all()
