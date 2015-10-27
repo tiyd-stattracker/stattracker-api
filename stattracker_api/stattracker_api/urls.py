@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework import routers
-from api.views import ActivityViewSet, StatsViewSet
+from api.views import ActivityViewSet
 
 router = routers.SimpleRouter()
 router.register(r'activities', ActivityViewSet)

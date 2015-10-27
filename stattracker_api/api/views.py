@@ -8,9 +8,3 @@ from datetime import datetime
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-
-class StatsViewSet(viewsets.ModelViewSet):
-    serializers_class = ActivitySerializer
-
-    def get_queryset(self):
-        return Activity.objects.filter(activity_date=datetime.date)
