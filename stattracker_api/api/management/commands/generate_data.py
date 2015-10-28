@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.contrib.auth.models import User
 from faker import Faker
 
 
@@ -7,11 +8,13 @@ def generate_activities():
     import json
     fake = Faker()
     activities = []
-    for _ in range(50):
-        activity = {'fields': {'activity_name': fake.catch_phrase(),
-                               'start_date': str(fake.date_time_this_month())[:10]},
-                    'model': 'api.Activity', }
-        activities.append(activity)
+    for user in User.objects.all():
+        for _ in range(5):
+            activity = {'fields': {'activity_name': fake.catch_phrase(),
+                                   'start_date': "2015-09-30",
+                                   'user': user.username},
+                        'model': 'api.Activity', }
+            activities.append(activity)
     with open('./api/fixtures/activities.json', 'w') as f:
         f.write(json.dumps(activities))
 
@@ -21,12 +24,14 @@ def generate_logs():
     import random
     fake = Faker()
     logs = []
-    for _ in range(250):
-        log = {'fields': {'activity': random.choice(range(1, 51)),
-                          'activity_date': str(fake.date_time_this_month())[:10],
-                          'activity_count': random.choice(range(1, 5))},
-               'model': 'api.Log', }
-        logs.append(log)
+    for user in User.objects.all():
+        for activity in user.activities.all():
+            for date in ['2015-10-0{}'.format(day) for day in range(1,10)]
+                log = {'fields': {'activity': activity,
+                                  'activity_date': date,
+                                  'activity_count': random.choice(range(1, 5))},
+                       'model': 'api.Log', }
+                logs.append(log)
     with open('./api/fixtures/logs.json', 'w') as f:
         f.write(json.dumps(logs))
 
