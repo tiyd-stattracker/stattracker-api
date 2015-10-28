@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.http.response import HttpResponse
 from rest_framework import viewsets
-from rest_framework.mixins import CreateModelMixin, DestroyModelMixin,UpdateModelMixin
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin,UpdateModelMixin,ListModelMixin
 from .permissions import IsOwner
 from .models import Activity, Log
 from .serializers import ActivitySerializer, ActivityDetailSerializer, LogSerializer, UserSerializer
@@ -39,7 +39,7 @@ class LogViewSet(viewsets.GenericViewSet, CreateModelMixin,DestroyModelMixin,Upd
         context['activity_id'] = self.kwargs['activity_pk']
         return context
 
-class UserViewSet(viewsets.GenericViewSet, CreateModelMixin):
+class UserViewSet(viewsets.GenericViewSet, CreateModelMixin,ListModelMixin):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
