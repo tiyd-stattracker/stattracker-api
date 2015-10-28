@@ -16,10 +16,11 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework_nested import routers
-from api.views import ActivityViewSet, LogViewSet
+from api.views import ActivityViewSet, LogViewSet, UserViewSet
 
 router = routers.SimpleRouter()
 router.register(r'activities', ActivityViewSet)
+router.register(r'users',UserViewSet)
 
 activies_router = routers.NestedSimpleRouter(router, r'activities', lookup='activity')
 activies_router.register(r'logs', LogViewSet)
