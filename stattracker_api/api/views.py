@@ -11,16 +11,12 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 
-
 # Create your views here.
 
 class ActivityViewSet(viewsets.ModelViewSet):
-<<<<<<< HEAD
-    queryset = Activity.objects.all()
-    # permission_classes = (permissions.IsOwner)
-=======
+
     queryset = Activity.objects.filter(user=request.user)
->>>>>>> master
+
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -64,7 +60,7 @@ def activity_month_graph(request, activity_pk):
     f = plt.figure(figsize=(5,4))
     plt.gcf().subplots_adjust(bottom=0.25)
     plt.bar(dates, counts)
-    plt.title('Activity Count for Last 30 Days')
+    plt.title('Activity Log for Last 30 Days')
     plt.xlim(then, datetime.date(datetime.today()))
     plt.xticks(rotation=60)
     plt.yticks([0]+[x+1 for x in range(max(counts))])
