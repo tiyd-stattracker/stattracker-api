@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin,UpdateModelMixin
+from .permissions import IsOwner
 from .models import Activity, Log
 from .serializers import ActivitySerializer, ActivityDetailSerializer, LogSerializer, UserSerializer
 from datetime import datetime
@@ -11,6 +12,7 @@ from datetime import datetime
 
 class ActivityViewSet(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
+    # permission_classes = (permissions.IsOwner)
 
     def get_serializer_class(self):
         if self.action == 'list':
