@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import viewsets
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin,UpdateModelMixin
 from .models import Activity, Log
 from .serializers import ActivitySerializer, ActivityDetailSerializer, LogSerializer, UserSerializer
 from datetime import datetime
@@ -18,7 +18,7 @@ class ActivityViewSet(viewsets.ModelViewSet):
         else:
             return ActivityDetailSerializer
 
-class LogViewSet(viewsets.ModelViewSet):
+class LogViewSet(viewsets.GenericViewSet, CreateModelMixin,DestroyModelMixin,UpdateModelMixin):
     queryset = Log.objects.all()
     serializer_class = LogSerializer
 
