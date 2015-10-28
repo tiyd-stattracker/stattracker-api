@@ -15,12 +15,8 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 # Create your views here.
 
 class ActivityViewSet(viewsets.ModelViewSet):
-<<<<<<< HEAD
-    queryset = Activity.objects.all()
     # permission_classes = (permissions.IsOwner)
-=======
-    queryset = Activity.objects.filter(user=request.user)
->>>>>>> master
+    queryset = Activity.objects.all()
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -47,14 +43,14 @@ class UserViewSet(viewsets.GenericViewSet, CreateModelMixin):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-@api_view(['GET'])
-def whoami(request):
-    user = request.user
-    if user.is_authenticated():
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
-    else:
-        return Response('', status=status.HTTP_404_NOT_FOUND)
+# @api_view(['GET'])
+# def whoami(request):
+#     user = request.user
+#     if user.is_authenticated():
+#         serializer = UserSerializer(user)
+#         return Response(serializer.data)
+#     else:
+#         return Response('', status=status.HTTP_404_NOT_FOUND)
 
 def activity_month_graph(request, activity_pk):
     then = datetime.date(datetime.today()) - timedelta(days=30)
