@@ -16,18 +16,20 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework_nested import routers
-from api.views import ActivityViewSet, LogViewSet, UserViewSet
+from api.views import ActivityViewSet, LogViewSet, UserViewSet, activity_month_graph, whoami
 
 router = routers.SimpleRouter()
 router.register(r'activities', ActivityViewSet)
 router.register(r'users',UserViewSet)
 
-activies_router = routers.NestedSimpleRouter(router, r'activities', lookup='activity')
-activies_router.register(r'logs', LogViewSet)
+activities_router = routers.NestedSimpleRouter(router, r'activities', lookup='activity')
+activities_router.register(r'logs', LogViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^api/whoami', whoami, name='who-am-i'),
     url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^api/', include(router.urls)),
-    url(r'^api/', include(activies_router.urls)),
+    url(r'^api/', include(activities_router.urls)),
+    url(r'^api/activities/(?P<activity_pk>\d+)/graph', activity_month_graph)
 ]
