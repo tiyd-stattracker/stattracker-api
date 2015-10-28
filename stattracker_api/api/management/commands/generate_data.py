@@ -3,6 +3,16 @@ from django.contrib.auth.models import User
 from faker import Faker
 
 
+def generate_users():
+    from faker import Faker
+    fake = Faker()
+    user_list = [x for x in {fake.username() for _ in range(100)}]
+    for x in range(10):
+        user = User(username=user_list[x], password='password')
+        user.set_password(user.password)
+        user.save()
+
+
 def generate_activities():
     from faker import Faker
     import json
@@ -40,3 +50,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         generate_activities()
         generate_logs()
+        generate_users()
