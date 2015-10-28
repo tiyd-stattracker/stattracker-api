@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import viewsets
+from rest_framework.mixins import CreateModelMixin
 from .models import Activity, Log
 from .serializers import ActivitySerializer, ActivityDetailSerializer, LogSerializer, UserSerializer
 from datetime import datetime
@@ -31,6 +32,6 @@ class LogViewSet(viewsets.ModelViewSet):
         context['activity_id'] = self.kwargs['activity_pk']
         return context
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.GenericViewSet, CreateModelMixin):
     queryset = User.objects.all()
     serializer_class = UserSerializer
