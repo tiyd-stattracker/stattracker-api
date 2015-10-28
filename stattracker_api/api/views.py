@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.http.response import HttpResponse
 from rest_framework import viewsets
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin,UpdateModelMixin
+from .permissions import IsOwner
 from .models import Activity, Log
 from .serializers import ActivitySerializer, ActivityDetailSerializer, LogSerializer, UserSerializer
 from datetime import datetime, timedelta
@@ -14,7 +15,12 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 # Create your views here.
 
 class ActivityViewSet(viewsets.ModelViewSet):
+<<<<<<< HEAD
+    queryset = Activity.objects.all()
+    # permission_classes = (permissions.IsOwner)
+=======
     queryset = Activity.objects.filter(user=request.user)
+>>>>>>> master
 
     def get_serializer_class(self):
         if self.action == 'list':

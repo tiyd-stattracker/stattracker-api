@@ -12,7 +12,7 @@ def generate_activities():
         for _ in range(5):
             activity = {'fields': {'activity_name': fake.catch_phrase(),
                                    'start_date': "2015-09-30",
-                                   'user': user.username},
+                                   'user': user.pk},
                         'model': 'api.Activity', }
             activities.append(activity)
     with open('./api/fixtures/activities.json', 'w') as f:
