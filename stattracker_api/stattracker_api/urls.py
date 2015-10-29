@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework_nested import routers
-from api.views import ActivityViewSet, LogViewSet, UserViewSet, activity_month_graph
+from api.views import ActivityViewSet, LogViewSet, UserViewSet, activity_month_graph, unset_graph
 
 router = routers.SimpleRouter()
 router.register(r'activities', ActivityViewSet)
@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(activities_router.urls)),
-    url(r'^api/activities/(?P<activity_pk>\d+)/graph', activity_month_graph)
+    url(r'^api/activities/(?P<activity_pk>\d+)/graph$', activity_month_graph),
+    url(r'^api/activities/(?P<activity_pk>\d+)/graph/(?P<start_date>\d{4}-\d{2}-\d{2})&(?P<end_date>\d{4}-\d{2}-\d{2})', unset_graph),
 ]

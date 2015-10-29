@@ -6,7 +6,8 @@ from rest_framework.mixins import CreateModelMixin, DestroyModelMixin,UpdateMode
 from .permissions import IsOwner
 from .models import Activity, Log
 from .serializers import ActivitySerializer, ActivityDetailSerializer, LogSerializer, UserSerializer
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+import time
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
@@ -62,6 +63,27 @@ def activity_month_graph(request, activity_pk):
     plt.bar(dates, counts)
     plt.title('Activity Count for Last 30 Days')
     plt.xlim(then, datetime.date(datetime.today()))
+    plt.xticks(rotation=60)
+    plt.yticks([0]+[x+1 for x in range(max(counts))])
+    canvas = FigureCanvasAgg(f)
+    response = HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    plt.close(f)
+    return response
+
+def unset_graph(request, activity_pk, start_date,end_date):
+    d = time.strptime(start_date, "%Y-%m-%d")
+    start_date = date(d[0],d[1],d[2])
+    d = time.strptime(end_date, "%Y-%m-%d")
+    end_date = date(d[0],d[1],d[2])
+    logs = Log.objects.filter(activity=activity_pk, activity_date__gte=start_date, activity_date__lte=end_date)
+    dates = [log.activity_date for log in logs]
+    counts = [log.activity_count for log in logs]
+    f = plt.figure(figsize=(5,4))
+    plt.gcf().subplots_adjust(bottom=0.25)
+    plt.bar(dates, counts)
+    plt.title('Activity Count for Selected Period')
+    plt.xlim(start_date, end_date)
     plt.xticks(rotation=60)
     plt.yticks([0]+[x+1 for x in range(max(counts))])
     canvas = FigureCanvasAgg(f)
