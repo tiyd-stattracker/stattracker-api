@@ -53,29 +53,16 @@ class UserViewSet(viewsets.GenericViewSet, CreateModelMixin,ListModelMixin):
 #     else:
 #         return Response('', status=status.HTTP_404_NOT_FOUND)
 
-def activity_month_graph(request, activity_pk):
-    then = datetime.date(datetime.today()) - timedelta(days=30)
-    logs = Log.objects.filter(activity=activity_pk, activity_date__gte=then)
-    dates = [log.activity_date for log in logs]
-    counts = [log.activity_count for log in logs]
-    f = plt.figure(figsize=(5,4))
-    plt.gcf().subplots_adjust(bottom=0.25)
-    plt.bar(dates, counts)
-    plt.title('Activity Count for Last 30 Days')
-    plt.xlim(then, datetime.date(datetime.today()))
-    plt.xticks(rotation=60)
-    plt.yticks([0]+[x+1 for x in range(max(counts))])
-    canvas = FigureCanvasAgg(f)
-    response = HttpResponse(content_type='image/png')
-    canvas.print_png(response)
-    plt.close(f)
-    return response
 
-def unset_graph(request, activity_pk, start_date,end_date):
-    d = time.strptime(start_date, "%Y-%m-%d")
-    start_date = date(d[0],d[1],d[2])
-    d = time.strptime(end_date, "%Y-%m-%d")
-    end_date = date(d[0],d[1],d[2])
+def unset_graph(request, activity_pk):
+    start_date = request.GET.get('start_date', datetime.today()-timedelta(days=30))
+    if type(start_date) == str:
+        d = time.strptime(start_date, "%Y-%m-%d")
+        start_date = date(d[0],d[1],d[2])
+    end_date = request.GET.get('end_date', datetime.today())
+    if type(end_date) == str:
+        d = time.strptime(end_date, "%Y-%m-%d")
+        end_date = date(d[0],d[1],d[2])
     logs = Log.objects.filter(activity=activity_pk, activity_date__gte=start_date, activity_date__lte=end_date)
     dates = [log.activity_date for log in logs]
     counts = [log.activity_count for log in logs]
